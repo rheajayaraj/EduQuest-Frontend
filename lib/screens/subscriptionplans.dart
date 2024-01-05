@@ -1,11 +1,11 @@
+import 'package:eduquest/screens/paymentscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:eduquest/theme/colours.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:eduquest/models/subscriptionplan.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:eduquest/provider/dataprovider.dart';
+import 'package:http/http.dart' as http;
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({Key? key}) : super(key: key);
@@ -31,21 +31,40 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     super.dispose();
   }
 
-  Future<void> enroll(String planID) async {
-    final apiUrl = '$api/joinplan/$planID';
+  Future<void> checkSubscription(int amount, String id) async {
+    final apiUrl = '$api/checksubscription';
     try {
       var token = await storage.read(key: 'token');
-      final response = await http
-          .post(Uri.parse(apiUrl), headers: {'Authorization': '$token'});
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Authorization': '$token',
+        },
+      );
+      print(response.statusCode);
       if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentScreen(
+              amount: amount,
+              planId: id,
+            ),
+          ),
+        );
+      } else if (response.statusCode == 400) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title:
-                  Text('Subscription Done', style: TextStyle(color: secondary)),
-              content:
-                  Text('Happy Learning!', style: TextStyle(color: secondary)),
+              title: Text(
+                'Subscription already exists',
+                style: TextStyle(color: secondary),
+              ),
+              content: Text(
+                'You can subscribe to a new plan after the current subscription plan is over',
+                style: TextStyle(color: secondary),
+              ),
               backgroundColor: background,
               actions: <Widget>[
                 TextButton(
@@ -61,36 +80,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             );
           },
         );
-      } else {
-        final Map<String, dynamic> responseBody = json.decode(response.body);
-        final errorMessage = responseBody['message'] ?? 'Unknown error';
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Subscription Failed',
-                  style: TextStyle(color: secondary)),
-              content:
-                  Text('$errorMessage', style: TextStyle(color: secondary)),
-              backgroundColor: background,
-              actions: <Widget>[
-                TextButton(
-                  child: Text(
-                    'OK',
-                    style: TextStyle(color: secondary),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
       }
-    } catch (error) {
-      print('Error fetching course: $error');
-    }
+    } catch (error) {}
   }
 
   List<SubscriptionPlan> getFilteredPlans(
@@ -193,9 +184,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                       ),
                                     ),
                                   ),
-                                  onPressed: () {
-                                    enroll(filteredPlans[index].id);
-                                  },
+                                  onPressed: () => checkSubscription(
+                                      filteredPlans[index].price,
+                                      filteredPlans[index].id),
                                   child: Text(
                                     'Subscribe',
                                     style: TextStyle(

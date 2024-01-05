@@ -30,7 +30,7 @@ void main() {
         '/verifycode': (context) => VerifyCode(),
         '/profile': (context) => Profile(),
         '/updateprofile': (context) => UpdateProfileScreen(),
-        '/player': (context) => CoursePlayerScreen(courseId: '')
+        '/player': (context) => CoursePlayerScreen(courseId: ''),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: secondary),
