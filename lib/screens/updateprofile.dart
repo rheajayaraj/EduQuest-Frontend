@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:eduquest/theme/colours.dart';
-import 'package:eduquest/models/user.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:eduquest/provider/dataprovider.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
@@ -88,7 +88,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-  Future<void> updateUserDetails(User currentUser) async {
+  Future<void> updateUserDetails() async {
     String newName = _nameController.text;
     String newPhoneNumber = _phoneNumberController.text;
     String newEmail = _emailController.text;
@@ -110,23 +110,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       if (base.isNotEmpty) {
         requestBody['image'] = base;
       }
-
-      var token = await storage.read(key: 'token');
-      final response = await http.patch(
-        Uri.parse('$api/updateuser'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': '$token',
-        },
-        body: json.encode(requestBody),
-      );
-      if (response.statusCode == 200) {
-        Navigator.pushNamed(context, '/profile');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update user details')),
-        );
-      }
+      DataProvider dataProvider =
+          Provider.of<DataProvider>(context, listen: false);
+      await dataProvider.updateUser(requestBody);
+      Navigator.pushNamed(context, '/profile');
     } catch (error) {
       print('Error updating user: $error');
     }
@@ -167,7 +154,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final User currentUser = ModalRoute.of(context)!.settings.arguments as User;
+    final dataProvider = Provider.of<DataProvider>(context);
+    final currentUser = dataProvider.currentUser;
     if (!_isInitialDataLoaded) {
       _nameController.text = currentUser.name;
       _phoneNumberController.text = currentUser.contact;
@@ -448,7 +436,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          updateUserDetails(currentUser);
+                          updateUserDetails();
                         }
                       },
                       child: Text(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:eduquest/theme/colours.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:eduquest/models/course.dart';
 import 'package:eduquest/screens/coursedetails.dart';
+import 'package:provider/provider.dart';
+import 'package:eduquest/provider/dataprovider.dart';
 
 class CourseScreen extends StatefulWidget {
   final String category;
@@ -22,7 +22,6 @@ class _CourseScreenState extends State<CourseScreen> {
   void initState() {
     super.initState();
     category = widget.category;
-    fetchCourses();
     _searchController = TextEditingController();
   }
 
@@ -32,26 +31,7 @@ class _CourseScreenState extends State<CourseScreen> {
     super.dispose();
   }
 
-  Future<void> fetchCourses() async {
-    final apiUrl = '$api/courses/$category';
-    try {
-      final response = await http.get(Uri.parse(apiUrl));
-      if (response.statusCode == 200) {
-        final List<dynamic> fetchedCourses = json.decode(response.body);
-        setState(() {
-          courses = fetchedCourses.map((courseData) {
-            return Course.fromJson(courseData);
-          }).toList();
-        });
-      } else {
-        print('Failed to fetch courses: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error fetching courses: $error');
-    }
-  }
-
-  List<Course> getFilteredCourses(String query) {
+  List<Course> getFilteredCourses(String query, List<Course> courses) {
     return courses.where((course) {
       final name = course.name.toLowerCase();
       final lowercaseQuery = query.toLowerCase();
@@ -61,7 +41,10 @@ class _CourseScreenState extends State<CourseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredCourses = getFilteredCourses(_searchController.text);
+    final dataProvider = Provider.of<DataProvider>(context);
+    dataProvider.fetchCourses(category);
+    final filteredCourses =
+        getFilteredCourses(_searchController.text, dataProvider.courses);
     return Scaffold(
       backgroundColor: background,
       resizeToAvoidBottomInset: false,

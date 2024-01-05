@@ -31,6 +31,28 @@ class User {
       required this.country,
       required this.image});
 
+  User copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? contact,
+    String? gender,
+    String? state,
+    String? country,
+    String? image,
+  }) {
+    return User(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      contact: contact ?? this.contact,
+      gender: gender ?? this.gender,
+      state: state ?? this.state,
+      country: country ?? this.country,
+      image: image ?? this.image,
+    );
+  }
+
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['_id'] ?? '',

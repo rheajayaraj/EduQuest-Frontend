@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:eduquest/models/subscriptionplan.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:eduquest/provider/dataprovider.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({Key? key}) : super(key: key);
@@ -20,7 +22,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   @override
   void initState() {
     super.initState();
-    fetchPlans();
     _searchController = TextEditingController();
   }
 
@@ -92,26 +93,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     }
   }
 
-  Future<void> fetchPlans() async {
-    final apiUrl = '$api/subscriptionplans';
-    try {
-      final response = await http.get(Uri.parse(apiUrl));
-      if (response.statusCode == 200) {
-        final List<dynamic> fetchedPlans = json.decode(response.body);
-        setState(() {
-          plans = fetchedPlans.map((courseData) {
-            return SubscriptionPlan.fromJson(courseData);
-          }).toList();
-        });
-      } else {
-        print('Failed to fetch courses: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error fetching courses: $error');
-    }
-  }
-
-  List<SubscriptionPlan> getFilteredPlans(String query) {
+  List<SubscriptionPlan> getFilteredPlans(
+      String query, List<SubscriptionPlan> plans) {
     return plans.where((plan) {
       final name = plan.name.toLowerCase();
       final lowercaseQuery = query.toLowerCase();
@@ -121,7 +104,10 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredPlans = getFilteredPlans(_searchController.text);
+    final dataProvider = Provider.of<DataProvider>(context);
+    dataProvider.fetchPlans();
+    final filteredPlans =
+        getFilteredPlans(_searchController.text, dataProvider.plans);
     return Scaffold(
       backgroundColor: background,
       resizeToAvoidBottomInset: false,

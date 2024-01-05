@@ -48,6 +48,16 @@ class _LoadingState extends State<Loading> {
               size: 100.0,
             ),
             SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              'Empower Learning with EduQuest',
+              style: TextStyle(
+                fontSize: 20.0,
+                color: background,
+              ),
+            ),
+            SizedBox(
               height: 30.0,
             ),
             SpinKitWaveSpinner(

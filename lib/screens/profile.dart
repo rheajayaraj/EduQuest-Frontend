@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:eduquest/theme/colours.dart';
 import 'package:http/http.dart' as http;
 import 'package:eduquest/models/user.dart';
-import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:eduquest/provider/dataprovider.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -27,30 +28,6 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    fetchData();
-  }
-
-  Future<void> fetchData() async {
-    final apiUrl = '$api/user';
-    try {
-      var token = await storage.read(key: 'token');
-      final response = await http.get(
-        Uri.parse(apiUrl),
-        headers: {
-          'Authorization': '$token',
-        },
-      );
-      if (response.statusCode == 200) {
-        final user = User.fromJson(json.decode(response.body));
-        setState(() {
-          currentUser = user;
-        });
-      } else {
-        print('Failed to fetch course: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error fetching course: $error');
-    }
   }
 
   void _confirmDelete() {
@@ -133,7 +110,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    String imagePath = currentUser.image;
+    final dataProvider = Provider.of<DataProvider>(context);
+    String imagePath = dataProvider.currentUser.image;
+    final currentUser = dataProvider.currentUser;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: background,
