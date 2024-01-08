@@ -42,7 +42,7 @@ class _ProfileState extends State<Profile> {
             TextButton(
               child: Text(
                 'Cancel',
-                style: TextStyle(color: accent),
+                style: TextStyle(color: primary),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -83,7 +83,7 @@ class _ProfileState extends State<Profile> {
             TextButton(
               child: Text(
                 'Cancel',
-                style: TextStyle(color: accent),
+                style: TextStyle(color: primary),
               ),
               onPressed: () {
                 Navigator.of(context).pop();

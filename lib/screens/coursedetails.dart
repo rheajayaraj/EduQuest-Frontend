@@ -74,7 +74,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                     style: TextStyle(color: secondary),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/mycourses');
+                    Navigator.pushNamed(context, '/home');
                   },
                 ),
               ],

@@ -150,7 +150,7 @@ class _LoginState extends State<Login> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: accent),
+                        color: secondary),
                   ),
                 ),
                 SizedBox(
@@ -188,7 +188,7 @@ class _LoginState extends State<Login> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: accent),
+                        color: secondary),
                   ),
                 ),
                 SizedBox(

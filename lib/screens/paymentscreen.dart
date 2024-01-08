@@ -63,7 +63,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     style: TextStyle(color: secondary),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/myplan');
+                    Navigator.pushNamed(context, '/home');
                   },
                 ),
               ],

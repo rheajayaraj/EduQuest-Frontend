@@ -183,7 +183,7 @@ class _SignUpState extends State<SignUp> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: accent),
+                        color: secondary),
                   ),
                 ),
                 SizedBox(
@@ -209,7 +209,7 @@ class _SignUpState extends State<SignUp> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: accent),
+                        color: secondary),
                   ),
                 ),
                 SizedBox(
@@ -233,7 +233,7 @@ class _SignUpState extends State<SignUp> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: accent),
+                        color: secondary),
                   ),
                 ),
                 SizedBox(
@@ -271,7 +271,7 @@ class _SignUpState extends State<SignUp> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: accent),
+                        color: secondary),
                   ),
                 ),
                 SizedBox(

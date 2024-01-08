@@ -85,7 +85,22 @@ class _CoursePlayerScreenState extends State<CoursePlayerScreen> {
                   aspectRatio: _videoPlayerController.value.aspectRatio,
                   child: VideoPlayer(_videoPlayerController),
                 )
-              : Container(),
+              : Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 70,
+                      ),
+                      Text(
+                        'No video available for this course.',
+                        style: TextStyle(fontSize: 18.0, color: secondary),
+                      ),
+                      SizedBox(
+                        height: 70,
+                      ),
+                    ],
+                  ),
+                ),
           SizedBox(
             width: 400,
             child: Padding(

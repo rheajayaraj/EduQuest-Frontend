@@ -191,7 +191,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     },
                     child: CircleAvatar(
                       backgroundImage: image.isEmpty
-                          ? NetworkImage(imagePath)
+                          ? NetworkImage(currentUser.image)
                           : FileImage(File(image)) as ImageProvider,
                       radius: 50.0,
                     ),
