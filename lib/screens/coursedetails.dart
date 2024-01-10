@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:eduquest/models/course.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CourseDetailsScreen extends StatefulWidget {
   final String courseId;
@@ -25,6 +26,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
       id: '');
   late String courseId;
   final storage = const FlutterSecureStorage();
+  late bool isLoading = true;
 
   @override
   void initState() {
@@ -42,6 +44,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
             CourseDetails.fromJson(json.decode(response.body));
         setState(() {
           courseDetails = fetchedCourse;
+          isLoading = false;
         });
       } else {
         print('Failed to fetch course: ${response.statusCode}');
@@ -62,16 +65,15 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title:
-                  Text('Course Enrolled', style: TextStyle(color: secondary)),
+              title: Text('Course Enrolled', style: TextStyle(color: text)),
               content: Text('Congratulations! Happy Learning!',
-                  style: TextStyle(color: secondary)),
+                  style: TextStyle(color: text)),
               backgroundColor: background,
               actions: <Widget>[
                 TextButton(
                   child: Text(
                     'OK',
-                    style: TextStyle(color: secondary),
+                    style: TextStyle(color: text),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/home');
@@ -88,19 +90,27 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Course Enroll Failed',
-                  style: TextStyle(color: secondary)),
-              content:
-                  Text('$errorMessage', style: TextStyle(color: secondary)),
+              title:
+                  Text('Course Enroll Failed', style: TextStyle(color: text)),
+              content: Text('$errorMessage', style: TextStyle(color: text)),
               backgroundColor: background,
               actions: <Widget>[
                 TextButton(
                   child: Text(
-                    'OK',
+                    'Cancel',
                     style: TextStyle(color: secondary),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text(
+                    'Subscribe',
+                    style: TextStyle(color: text),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/plans');
                   },
                 ),
               ],
@@ -118,34 +128,51 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
     return Scaffold(
       backgroundColor: background,
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 400,
-                  child: Card(
-                    elevation: 4.0,
-                    margin: EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 16.0,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    color: Colors.transparent,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.0),
-                        image: DecorationImage(
-                          image: AssetImage('assets/category.jpeg'),
-                          fit: BoxFit.cover,
+      body: isLoading
+          ? _buildShimmerPlaceholder()
+          : SafeArea(
+              child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 400,
+                        height: 170,
+                        child: Card(
+                          elevation: 4.0,
+                          margin: EdgeInsets.symmetric(
+                            vertical: 8.0,
+                            horizontal: 16.0,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          color: Colors.transparent,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              image: DecorationImage(
+                                image: courseDetails.thumbnail_path.isNotEmpty
+                                    ? NetworkImage(courseDetails.thumbnail_path)
+                                    : AssetImage('assets/category.jpeg')
+                                        as ImageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [],
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      child: Padding(
+                      Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -153,117 +180,164 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                               style: TextStyle(
                                 fontSize: 30.0,
                                 fontWeight: FontWeight.bold,
-                                color: secondary,
+                                color: text,
                               ),
                             ),
                             SizedBox(height: 8.0),
                             Text(
                               courseDetails.short_description,
                               style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: text,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 15.0),
+                            Text(
+                              courseDetails.long_description,
+                              style: TextStyle(
                                 fontSize: 16.0,
-                                color: secondary,
+                                color: text,
+                              ),
+                            ),
+                            SizedBox(height: 15.0),
+                            Text(
+                              "Educator:",
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: text,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              courseDetails.course_id.educator,
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: text,
+                              ),
+                            ),
+                            SizedBox(height: 15.0),
+                            Text(
+                              "Duration:",
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: text,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              "${(courseDetails.course_id.duration).toString()} minutes",
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: text,
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 400,
-                  child: Card(
-                    color: primary,
-                    elevation: 4.0,
-                    margin: EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 16.0,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            courseDetails.long_description,
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: secondary,
+                      SizedBox(
+                        width: 360,
+                        height: 60,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll<Color>(primary),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
                             ),
                           ),
-                          SizedBox(height: 15.0),
-                          Text(
-                            "Educator:",
+                          onPressed: () {
+                            enroll(courseDetails.course_id.id);
+                          },
+                          child: Text(
+                            'Enroll',
                             style: TextStyle(
-                                fontSize: 18.0,
-                                color: secondary,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            courseDetails.course_id.educator,
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: secondary,
-                            ),
-                          ),
-                          SizedBox(height: 15.0),
-                          Text(
-                            "Duration:",
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                color: secondary,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "${(courseDetails.course_id.duration).toString()} minutes",
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: secondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 16.0),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: SizedBox(
-                      width: 120,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(primary),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
+                              color: text,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                        onPressed: () {
-                          enroll(courseDetails.course_id.id);
-                        },
-                        child: Text(
-                          'Enroll',
-                          style: TextStyle(
-                            color: secondary,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ],
-            )),
-      ),
+                    ],
+                  )),
+            ),
     );
   }
+}
+
+Widget _buildShimmerPlaceholder() {
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            SizedBox(
+              width: 400,
+              height: 170,
+              child: Card(
+                elevation: 4.0,
+                margin: EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 16.0,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                color: Colors.transparent,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildShimmerText(),
+                  SizedBox(height: 8.0),
+                  _buildShimmerText(),
+                  SizedBox(height: 15.0),
+                  _buildShimmerText(),
+                  SizedBox(height: 15.0),
+                  _buildShimmerText(),
+                  _buildShimmerText(),
+                  SizedBox(height: 15.0),
+                  _buildShimmerText(),
+                  _buildShimmerText(),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 360,
+              height: 60,
+              child: ElevatedButton(
+                onPressed: () {},
+                child: _buildShimmerText(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _buildShimmerText() {
+  return SizedBox(
+    width: double.infinity,
+    height: 20.0,
+    child: Container(
+      color: Colors.grey,
+      margin: EdgeInsets.symmetric(vertical: 4.0),
+    ),
+  );
 }

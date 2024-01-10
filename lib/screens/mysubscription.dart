@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:eduquest/models/subscriptionplan.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MySubscription extends StatefulWidget {
   const MySubscription({super.key});
@@ -16,6 +17,7 @@ class _MySubscriptionState extends State<MySubscription> {
   List<SubscriptionPlan> plans = [];
   late TextEditingController _searchController;
   final storage = const FlutterSecureStorage();
+  late bool isLoading = true;
 
   @override
   void initState() {
@@ -46,6 +48,7 @@ class _MySubscriptionState extends State<MySubscription> {
           plans = fetchedPlans.map((planData) {
             return SubscriptionPlan.fromJson(planData);
           }).toList();
+          isLoading = false;
         });
       } else {
         print('Failed to fetch courses: ${response.statusCode}');
@@ -96,60 +99,68 @@ class _MySubscriptionState extends State<MySubscription> {
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400,
-                    color: secondary,
+                    color: text,
                   ),
                 ),
               ),
               SizedBox(height: 20.0),
               Expanded(
-                child: filteredPlans.isEmpty
-                    ? Center(
-                        child: Text(
-                          'No subscriptions',
-                          style: TextStyle(fontSize: 18.0, color: secondary),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: filteredPlans.length,
+                child: plans.isEmpty
+                    ? ListView.builder(
+                        itemCount: 3,
                         itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () => {},
-                            child: Card(
-                              color: primary,
-                              elevation: 4.0,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 16.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      filteredPlans[index].name,
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: secondary,
-                                      ),
-                                    ),
-                                    SizedBox(height: 4.0),
-                                    Text(
-                                      'Price: ${filteredPlans[index].price}',
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: secondary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
+                          return buildShimmerCourseCard();
                         },
-                      ),
+                      )
+                    : filteredPlans.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No plans available',
+                              style: TextStyle(fontSize: 18.0, color: text),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: filteredPlans.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () => {},
+                                child: Card(
+                                  color: background,
+                                  elevation: 4.0,
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 16.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          filteredPlans[index].name,
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: text,
+                                          ),
+                                        ),
+                                        SizedBox(height: 4.0),
+                                        Text(
+                                          'Price: ${filteredPlans[index].price}',
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: text,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
               ),
             ],
           ),
@@ -157,4 +168,16 @@ class _MySubscriptionState extends State<MySubscription> {
       ),
     );
   }
+}
+
+Widget buildShimmerCourseCard() {
+  return SizedBox(
+    width: double.infinity,
+    height: 100.0,
+    child: Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Card(),
+    ),
+  );
 }

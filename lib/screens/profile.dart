@@ -35,14 +35,14 @@ class _ProfileState extends State<Profile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Delete', style: TextStyle(color: secondary)),
+          title: Text('Confirm Delete', style: TextStyle(color: text)),
           content: Text('Are you sure you want to delete your account?'),
           backgroundColor: background,
           actions: <Widget>[
             TextButton(
               child: Text(
                 'Cancel',
-                style: TextStyle(color: primary),
+                style: TextStyle(color: secondary),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -50,8 +50,7 @@ class _ProfileState extends State<Profile> {
             ),
             TextButton(
               child: Text('Delete',
-                  style:
-                      TextStyle(color: secondary, fontWeight: FontWeight.w700)),
+                  style: TextStyle(color: text, fontWeight: FontWeight.w700)),
               onPressed: () async {
                 var token = await storage.read(key: 'token');
                 final response = await http.delete(
@@ -76,14 +75,14 @@ class _ProfileState extends State<Profile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Logout', style: TextStyle(color: secondary)),
+          title: Text('Confirm Logout', style: TextStyle(color: text)),
           content: Text('Are you sure you want to log out?'),
           backgroundColor: background,
           actions: <Widget>[
             TextButton(
               child: Text(
                 'Cancel',
-                style: TextStyle(color: primary),
+                style: TextStyle(color: secondary),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -91,8 +90,7 @@ class _ProfileState extends State<Profile> {
             ),
             TextButton(
               child: Text('Logout',
-                  style:
-                      TextStyle(color: secondary, fontWeight: FontWeight.w700)),
+                  style: TextStyle(color: text, fontWeight: FontWeight.w700)),
               onPressed: () async {
                 try {
                   await storage.delete(key: 'token');
@@ -142,7 +140,7 @@ class _ProfileState extends State<Profile> {
                           style: TextStyle(
                             fontSize: 80,
                             fontWeight: FontWeight.bold,
-                            color: primary,
+                            color: text,
                           ),
                         )
                       : null,
@@ -161,7 +159,7 @@ class _ProfileState extends State<Profile> {
                         style: TextStyle(
                           fontSize: 30.0,
                           fontWeight: FontWeight.w400,
-                          color: secondary,
+                          color: text,
                         ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
@@ -172,7 +170,7 @@ class _ProfileState extends State<Profile> {
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.w400,
-                          color: secondary,
+                          color: text,
                         ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
@@ -183,7 +181,7 @@ class _ProfileState extends State<Profile> {
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.w400,
-                          color: secondary,
+                          color: text,
                         ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
@@ -200,7 +198,6 @@ class _ProfileState extends State<Profile> {
               width: 400,
               child: Card(
                 color: background,
-                elevation: 4.0,
                 margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
@@ -214,7 +211,7 @@ class _ProfileState extends State<Profile> {
                         'Other Details:',
                         style: TextStyle(
                           fontSize: 20.0,
-                          color: secondary,
+                          color: text,
                         ),
                       ),
                       SizedBox(
@@ -224,7 +221,7 @@ class _ProfileState extends State<Profile> {
                         "Gender: ${currentUser.gender}",
                         style: TextStyle(
                           fontSize: 18.0,
-                          color: secondary,
+                          color: text,
                         ),
                       ),
                       SizedBox(height: 4.0),
@@ -232,7 +229,7 @@ class _ProfileState extends State<Profile> {
                         "State: ${currentUser.state}",
                         style: TextStyle(
                           fontSize: 18.0,
-                          color: secondary,
+                          color: text,
                         ),
                       ),
                       SizedBox(height: 4.0),
@@ -240,7 +237,7 @@ class _ProfileState extends State<Profile> {
                         'Country: ${currentUser.country}',
                         style: TextStyle(
                           fontSize: 18.0,
-                          color: secondary,
+                          color: text,
                         ),
                       ),
                     ],
@@ -277,7 +274,7 @@ class _ProfileState extends State<Profile> {
                 child: Text(
                   'Update Profile',
                   style: TextStyle(
-                    color: secondary,
+                    color: text,
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
                   ),
@@ -309,7 +306,7 @@ class _ProfileState extends State<Profile> {
                 child: Text(
                   'Delete Profile',
                   style: TextStyle(
-                    color: secondary,
+                    color: text,
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
                   ),
@@ -337,7 +334,7 @@ class _ProfileState extends State<Profile> {
                 child: Text(
                   'Logout',
                   style: TextStyle(
-                    color: secondary,
+                    color: text,
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
                   ),

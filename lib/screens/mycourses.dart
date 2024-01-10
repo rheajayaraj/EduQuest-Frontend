@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:eduquest/models/course.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'couresplayer.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MyCoursesScreen extends StatefulWidget {
   const MyCoursesScreen({super.key});
@@ -97,77 +98,85 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400,
-                    color: secondary,
+                    color: text,
                   ),
                 ),
               ),
               SizedBox(height: 20.0),
               Expanded(
-                child: filteredCourses.isEmpty
-                    ? Center(
-                        child: Text(
-                          'No courses available',
-                          style: TextStyle(fontSize: 18.0, color: secondary),
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: filteredCourses.length,
+                child: courses.isEmpty
+                    ? ListView.builder(
+                        itemCount: 5,
                         itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CoursePlayerScreen(
-                                    courseId: filteredCourses[index].id,
+                          return buildShimmerCourseCard();
+                        },
+                      )
+                    : filteredCourses.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No courses available',
+                              style: TextStyle(fontSize: 18.0, color: text),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: filteredCourses.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CoursePlayerScreen(
+                                        courseId: filteredCourses[index].id,
+                                      ),
+                                    ),
+                                  )
+                                },
+                                child: Card(
+                                  color: background,
+                                  elevation: 4.0,
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 8.0, horizontal: 16.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          filteredCourses[index].name,
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold,
+                                            color: text,
+                                          ),
+                                        ),
+                                        SizedBox(height: 4.0),
+                                        Text(
+                                          'Educator: ${filteredCourses[index].educator}',
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: text,
+                                          ),
+                                        ),
+                                        SizedBox(height: 4.0),
+                                        Text(
+                                          'Duration: ${filteredCourses[index].duration} minutes',
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: text,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              )
+                              );
                             },
-                            child: Card(
-                              color: primary,
-                              elevation: 4.0,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 16.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      filteredCourses[index].name,
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: secondary,
-                                      ),
-                                    ),
-                                    SizedBox(height: 4.0),
-                                    Text(
-                                      'Educator: ${filteredCourses[index].educator}',
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: secondary,
-                                      ),
-                                    ),
-                                    SizedBox(height: 4.0),
-                                    Text(
-                                      'Duration: ${filteredCourses[index].duration} minutes',
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: secondary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                          ),
               ),
             ],
           ),
@@ -175,4 +184,16 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
       ),
     );
   }
+}
+
+Widget buildShimmerCourseCard() {
+  return SizedBox(
+    width: double.infinity,
+    height: 100.0,
+    child: Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Card(),
+    ),
+  );
 }

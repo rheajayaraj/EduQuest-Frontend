@@ -1,13 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:eduquest/models/coursedetails.dart';
 import 'package:eduquest/models/course.dart';
-import 'package:video_player/video_player.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:eduquest/theme/colours.dart';
 
 class CoursePlayerScreen extends StatefulWidget {
   final String courseId;
+
   CoursePlayerScreen({required this.courseId});
 
   @override
@@ -15,8 +16,8 @@ class CoursePlayerScreen extends StatefulWidget {
 }
 
 class _CoursePlayerScreenState extends State<CoursePlayerScreen> {
-  late VideoPlayerController _videoPlayerController;
   late String courseId;
+  late bool isLoading = true;
   CourseDetails courseDetails = CourseDetails(
       short_description: '',
       long_description: '',
@@ -42,7 +43,7 @@ class _CoursePlayerScreenState extends State<CoursePlayerScreen> {
             CourseDetails.fromJson(json.decode(response.body));
         setState(() {
           courseDetails = fetchedCourse;
-          _initializePlayer();
+          isLoading = false;
         });
       } else {
         print('Failed to fetch course: ${response.statusCode}');
@@ -52,159 +53,107 @@ class _CoursePlayerScreenState extends State<CoursePlayerScreen> {
     }
   }
 
-  void _initializePlayer() {
-    try {
-      _videoPlayerController = VideoPlayerController.networkUrl(
-        Uri.parse(courseDetails.video_path),
-      )..initialize().then((_) {
-          setState(() {});
-        });
-      _videoPlayerController.setLooping(true);
-    } catch (error) {
-      print('Error creating video player controller: $error');
-    }
-  }
-
-  @override
-  void dispose() {
-    _videoPlayerController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    String htmlContent = '''
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Video Player</title>
+        </head>
+        <body style="margin: 0; padding: 0;">
+          <video id="videoPlayer" width="100%" height="auto" controls disablePictureInPicture="true" controlsList="nodownload">
+            Your browser does not support the video tag.
+          </video>
+          <script>
+            var videoPath = '${courseDetails.video_path}';
+            document.getElementById('videoPlayer').src = videoPath;
+          </script>
+        </body>
+      </html>
+    ''';
     return Scaffold(
       appBar: AppBar(
         title: Text('${courseDetails.course_id.name}'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _videoPlayerController.value.isInitialized
-              ? AspectRatio(
-                  aspectRatio: _videoPlayerController.value.aspectRatio,
-                  child: VideoPlayer(_videoPlayerController),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : courseDetails.video_path.isNotEmpty
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 250,
+                      child: InAppWebView(
+                        initialData: InAppWebViewInitialData(data: htmlContent),
+                        initialOptions: InAppWebViewGroupOptions(
+                          crossPlatform: InAppWebViewOptions(
+                            useShouldOverrideUrlLoading: true,
+                            mediaPlaybackRequiresUserGesture: false,
+                            supportZoom: false,
+                          ),
+                          android: AndroidInAppWebViewOptions(
+                            useHybridComposition: true,
+                          ),
+                          ios: IOSInAppWebViewOptions(
+                            allowsInlineMediaPlayback: true,
+                          ),
+                        ),
+                        onLoadHttpError: (controller, url, code, message) {
+                          print('HTTP error loading web content: $message');
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            courseDetails.long_description,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: text,
+                            ),
+                          ),
+                          SizedBox(height: 15.0),
+                          Text(
+                            "Educator:",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: text,
+                            ),
+                          ),
+                          Text(
+                            courseDetails.course_id.educator,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: text,
+                            ),
+                          ),
+                          SizedBox(height: 15.0),
+                          Text(
+                            "Duration:",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: text,
+                            ),
+                          ),
+                          Text(
+                            "${(courseDetails.course_id.duration).toString()} minutes",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: text,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 )
-              : Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 70,
-                      ),
-                      Text(
-                        'No video available for this course.',
-                        style: TextStyle(fontSize: 18.0, color: secondary),
-                      ),
-                      SizedBox(
-                        height: 70,
-                      ),
-                    ],
-                  ),
-                ),
-          SizedBox(
-            width: 400,
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    courseDetails.long_description,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: secondary,
-                    ),
-                  ),
-                  SizedBox(height: 15.0),
-                  Text(
-                    "Educator:",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      color: secondary,
-                    ),
-                  ),
-                  Text(
-                    courseDetails.course_id.educator,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: secondary,
-                    ),
-                  ),
-                  SizedBox(height: 15.0),
-                  Text(
-                    "Duration:",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      color: secondary,
-                    ),
-                  ),
-                  Text(
-                    "${(courseDetails.course_id.duration).toString()} minutes",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: secondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            backgroundColor: primary, // Change color if necessary
-            onPressed: () {
-              // Rewind by 10 seconds
-              _videoPlayerController.seekTo(
-                Duration(
-                    seconds:
-                        _videoPlayerController.value.position.inSeconds - 10),
-              );
-            },
-            child: Icon(Icons.replay_10),
-          ),
-          SizedBox(height: 10),
-          FloatingActionButton(
-            backgroundColor: primary, // Change color if necessary
-            onPressed: () {
-              // Forward by 10 seconds
-              _videoPlayerController.seekTo(
-                Duration(
-                    seconds:
-                        _videoPlayerController.value.position.inSeconds + 10),
-              );
-            },
-            child: Icon(Icons.forward_10),
-          ),
-          SizedBox(height: 10),
-          FloatingActionButton(
-            backgroundColor: primary, // Change color if necessary
-            onPressed: () {
-              setState(() {
-                // pause
-                if (_videoPlayerController.value.isPlaying) {
-                  _videoPlayerController.pause();
-                } else {
-                  // play
-                  _videoPlayerController.play();
-                }
-              });
-            },
-            // icon
-            child: Icon(
-              _videoPlayerController.value.isPlaying
-                  ? Icons.pause
-                  : Icons.play_arrow,
-            ),
-          ),
-        ],
-      ),
+              : Center(child: Text('No video available')),
     );
   }
 }

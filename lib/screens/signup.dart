@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:eduquest/theme/colours.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key});
@@ -18,6 +19,7 @@ class _SignUpState extends State<SignUp> {
   bool _isPasswordVisible = false;
   final _formKey = GlobalKey<FormState>();
   String? _signupErrorMessage = '';
+  final storage = const FlutterSecureStorage();
 
   @override
   void initState() {
@@ -117,6 +119,8 @@ class _SignUpState extends State<SignUp> {
       );
       if (response.statusCode == 200) {
         _updateSignupErrorMessage('User signed up successfully');
+        final dynamic responseData = json.decode(response.body);
+        await storage.write(key: 'token', value: responseData['JWT_token']);
         Navigator.pushNamed(
           context,
           '/home',
@@ -158,9 +162,7 @@ class _SignUpState extends State<SignUp> {
                 Text(
                   'Sign Up to get started',
                   style: TextStyle(
-                      color: secondary,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w600),
+                      color: text, fontSize: 18.0, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
                   height: 30.0,
@@ -183,7 +185,7 @@ class _SignUpState extends State<SignUp> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: secondary),
+                        color: text),
                   ),
                 ),
                 SizedBox(
@@ -209,7 +211,7 @@ class _SignUpState extends State<SignUp> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: secondary),
+                        color: text),
                   ),
                 ),
                 SizedBox(
@@ -233,7 +235,7 @@ class _SignUpState extends State<SignUp> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: secondary),
+                        color: text),
                   ),
                 ),
                 SizedBox(
@@ -271,7 +273,7 @@ class _SignUpState extends State<SignUp> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: secondary),
+                        color: text),
                   ),
                 ),
                 SizedBox(
@@ -302,7 +304,7 @@ class _SignUpState extends State<SignUp> {
                     child: Text(
                       'Sign Up',
                       style: TextStyle(
-                        color: secondary,
+                        color: text,
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600,
                       ),
@@ -343,11 +345,11 @@ class _SignUpState extends State<SignUp> {
                       child: Text(
                         'LOGIN',
                         style: TextStyle(
-                          color: secondary,
+                          color: text,
                           fontSize: 16.0,
                           fontWeight: FontWeight.w500,
                           decoration: TextDecoration.underline,
-                          decorationColor: secondary,
+                          decorationColor: text,
                         ),
                       ),
                     )

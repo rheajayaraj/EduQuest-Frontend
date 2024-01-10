@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:eduquest/provider/dataprovider.dart';
 import 'package:http/http.dart' as http;
+import 'package:shimmer/shimmer.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({Key? key}) : super(key: key);
@@ -59,21 +60,21 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             return AlertDialog(
               title: Text(
                 'Subscription already exists',
-                style: TextStyle(color: secondary),
+                style: TextStyle(color: text),
               ),
               content: Text(
                 'You can subscribe to a new plan after the current subscription plan is over',
-                style: TextStyle(color: secondary),
+                style: TextStyle(color: text),
               ),
               backgroundColor: background,
               actions: <Widget>[
                 TextButton(
                   child: Text(
                     'OK',
-                    style: TextStyle(color: secondary),
+                    style: TextStyle(color: text),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/myplan');
+                    Navigator.pushNamed(context, '/home');
                   },
                 ),
               ],
@@ -129,81 +130,97 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400,
-                    color: secondary,
+                    color: text,
                   ),
                 ),
               ),
               SizedBox(height: 20.0),
               Expanded(
-                child: ListView.builder(
-                  itemCount: filteredPlans.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      color: primary,
-                      elevation: 4.0,
-                      margin:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              filteredPlans[index].name,
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: secondary,
-                              ),
+                child: dataProvider.plans.isEmpty
+                    ? ListView.builder(
+                        itemCount: 3,
+                        itemBuilder: (BuildContext context, int index) {
+                          return buildShimmerCourseCard();
+                        },
+                      )
+                    : filteredPlans.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No plans available',
+                              style: TextStyle(fontSize: 18.0, color: text),
                             ),
-                            SizedBox(height: 8.0),
-                            Text(
-                              'Price: Rs.${filteredPlans[index].price}',
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                color: secondary,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: SizedBox(
-                                width: 130,
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStatePropertyAll<Color>(
-                                            secondary),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
+                          )
+                        : ListView.builder(
+                            itemCount: filteredPlans.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                color: background,
+                                elevation: 4.0,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 16.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        filteredPlans[index].name,
+                                        style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: text,
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  onPressed: () => checkSubscription(
-                                      filteredPlans[index].price,
-                                      filteredPlans[index].id),
-                                  child: Text(
-                                    'Subscribe',
-                                    style: TextStyle(
-                                      color: primary,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                      SizedBox(height: 8.0),
+                                      Text(
+                                        'Price: Rs.${filteredPlans[index].price}',
+                                        style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: text,
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: SizedBox(
+                                          width: 130,
+                                          child: ElevatedButton(
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStatePropertyAll<
+                                                      Color>(primary),
+                                              shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                ),
+                                              ),
+                                            ),
+                                            onPressed: () => checkSubscription(
+                                                filteredPlans[index].price,
+                                                filteredPlans[index].id),
+                                            child: Text(
+                                              'Subscribe',
+                                              style: TextStyle(
+                                                color: text,
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                              );
+                            },
+                          ),
               ),
             ],
           ),
@@ -211,4 +228,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       ),
     );
   }
+}
+
+Widget buildShimmerCourseCard() {
+  return SizedBox(
+    width: double.infinity,
+    height: 100.0,
+    child: Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Card(),
+    ),
+  );
 }

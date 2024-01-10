@@ -51,16 +51,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title:
-                  Text('Subscription Done', style: TextStyle(color: secondary)),
-              content:
-                  Text('Happy Learning!', style: TextStyle(color: secondary)),
+              title: Text('Subscription Done', style: TextStyle(color: text)),
+              content: Text('Happy Learning!', style: TextStyle(color: text)),
               backgroundColor: background,
               actions: <Widget>[
                 TextButton(
                   child: Text(
                     'OK',
-                    style: TextStyle(color: secondary),
+                    style: TextStyle(color: primary),
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/home');
@@ -77,16 +75,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Subscription Failed',
-                  style: TextStyle(color: secondary)),
-              content:
-                  Text('$errorMessage', style: TextStyle(color: secondary)),
+              title: Text('Subscription Failed', style: TextStyle(color: text)),
+              content: Text('$errorMessage', style: TextStyle(color: text)),
               backgroundColor: background,
               actions: <Widget>[
                 TextButton(
                   child: Text(
                     'OK',
-                    style: TextStyle(color: secondary),
+                    style: TextStyle(color: primary),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -130,15 +126,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Payment Failed', style: TextStyle(color: secondary)),
+          title: Text('Payment Failed', style: TextStyle(color: text)),
           content: Text('Retry payment in a few minutes',
-              style: TextStyle(color: secondary)),
+              style: TextStyle(color: text)),
           backgroundColor: background,
           actions: <Widget>[
             TextButton(
               child: Text(
                 'OK',
-                style: TextStyle(color: secondary),
+                style: TextStyle(color: primary),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -153,8 +149,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void _startPayment() {
     var options = {
       'key': 'rzp_test_DcLTuxaja5mAwu',
-      'amount':
-          amount * 100, // Amount in smallest currency unit (here, in paisa)
+      'amount': amount * 100,
       'name': 'EduQuest',
       'description': 'Subscription Purchase',
       'prefill': {
@@ -187,7 +182,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 'You will be paying',
                 style: TextStyle(
                   fontSize: 20.0,
-                  color: secondary,
+                  color: text,
                 ),
               ),
               SizedBox(height: 8.0),
@@ -196,16 +191,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
-                  color: secondary, // Adjust color to match your theme
+                  color: text,
                 ),
               ),
               SizedBox(height: 20.0),
               ElevatedButton.icon(
                 onPressed: _startPayment,
-                icon: Icon(Icons.payment),
+                icon: Icon(
+                  Icons.payment,
+                  color: secondary,
+                ),
                 label: Text(
                   'Pay Now',
-                  style: TextStyle(color: secondary),
+                  style: TextStyle(color: text),
                 ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(primary),

@@ -161,8 +161,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       _phoneNumberController.text = currentUser.contact;
       _emailController.text = currentUser.email;
       _countryController.text = currentUser.country;
-      _selectedGender = currentUser.gender;
-      _selectedState = currentUser.state;
+      _selectedGender =
+          currentUser.gender.isEmpty ? 'Male' : currentUser.gender;
+      _selectedState =
+          currentUser.state.isEmpty ? 'Andhra Pradesh' : currentUser.state;
       _isInitialDataLoaded = true;
     }
     return Scaffold(
@@ -216,7 +218,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w400,
-                          color: secondary),
+                          color: text),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a name';
@@ -251,7 +253,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w400,
-                          color: secondary),
+                          color: text),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a phone number';
@@ -284,7 +286,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: secondary,
+                        color: text,
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -324,7 +326,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           value: gender,
                           child: Text(
                             gender,
-                            style: TextStyle(color: secondary),
+                            style: TextStyle(color: text),
                           ),
                         );
                       }).toList(),
@@ -363,7 +365,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           value: state,
                           child: Text(
                             state,
-                            style: TextStyle(color: secondary),
+                            style: TextStyle(color: text),
                           ),
                         );
                       }).toList(),
@@ -400,7 +402,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: secondary,
+                        color: text,
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -442,7 +444,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       child: Text(
                         'Update',
                         style: TextStyle(
-                          color: secondary,
+                          color: text,
                           fontSize: 18.0,
                           fontWeight: FontWeight.w600,
                         ),

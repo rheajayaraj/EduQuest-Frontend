@@ -13,6 +13,7 @@ import 'package:eduquest/screens/mysubscription.dart';
 import 'package:eduquest/screens/updateprofile.dart';
 import 'package:eduquest/screens/couresplayer.dart';
 import 'package:eduquest/provider/dataprovider.dart';
+import 'package:eduquest/screens/subscriptionplans.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
@@ -31,6 +32,7 @@ void main() {
         '/profile': (context) => Profile(),
         '/updateprofile': (context) => UpdateProfileScreen(),
         '/player': (context) => CoursePlayerScreen(courseId: ''),
+        '/plans': (context) => SubscriptionScreen()
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: secondary),

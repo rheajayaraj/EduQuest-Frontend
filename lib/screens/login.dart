@@ -125,9 +125,7 @@ class _LoginState extends State<Login> {
                 Text(
                   'Login to Continue',
                   style: TextStyle(
-                      color: secondary,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w600),
+                      color: text, fontSize: 18.0, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(
                   height: 30.0,
@@ -150,7 +148,7 @@ class _LoginState extends State<Login> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: secondary),
+                        color: text),
                   ),
                 ),
                 SizedBox(
@@ -188,7 +186,7 @@ class _LoginState extends State<Login> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: secondary),
+                        color: text),
                   ),
                 ),
                 SizedBox(
@@ -209,7 +207,7 @@ class _LoginState extends State<Login> {
                         child: Text(
                           'Forgot Password?',
                           style: TextStyle(
-                            color: secondary,
+                            color: text,
                             fontSize: 14.0,
                             fontWeight: FontWeight.w400,
                           ),
@@ -244,7 +242,7 @@ class _LoginState extends State<Login> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                          color: secondary,
+                          color: text,
                           fontSize: 18.0,
                           fontWeight: FontWeight.w600),
                     ),
@@ -284,11 +282,11 @@ class _LoginState extends State<Login> {
                       child: Text(
                         'SIGN UP',
                         style: TextStyle(
-                          color: secondary,
+                          color: text,
                           fontSize: 16.0,
                           fontWeight: FontWeight.w500,
                           decoration: TextDecoration.underline,
-                          decorationColor: secondary,
+                          decorationColor: text,
                         ),
                       ),
                     )

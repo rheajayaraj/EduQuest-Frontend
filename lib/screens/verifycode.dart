@@ -147,9 +147,7 @@ class _VerifyCodeState extends State<VerifyCode> {
                 Text(
                   'Verification Code',
                   style: TextStyle(
-                      color: secondary,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w600),
+                      color: text, fontSize: 18.0, fontWeight: FontWeight.w600),
                 ),
                 Text(
                   'Enter the verification code sent to your email',
@@ -201,7 +199,7 @@ class _VerifyCodeState extends State<VerifyCode> {
                     style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
-                        color: accent),
+                        color: text),
                   ),
                 ),
                 SizedBox(
@@ -227,7 +225,7 @@ class _VerifyCodeState extends State<VerifyCode> {
                     child: Text(
                       'Submit',
                       style: TextStyle(
-                        color: secondary,
+                        color: text,
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600,
                       ),
@@ -267,7 +265,7 @@ class _VerifyCodeState extends State<VerifyCode> {
             ),
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 18.0, fontWeight: FontWeight.w600, color: secondary),
+                fontSize: 18.0, fontWeight: FontWeight.w600, color: text),
           ),
         ),
       );

@@ -119,7 +119,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w400,
-                          color: accent),
+                          color: text),
                     ),
                   ),
                   SizedBox(
