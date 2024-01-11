@@ -100,6 +100,7 @@ class DataProvider extends ChangeNotifier {
   }
 
   Future<void> fetchCourses(String category) async {
+    _courses.clear();
     final apiUrl = '$api/courses/$category';
     try {
       final response = await http.get(Uri.parse(apiUrl));

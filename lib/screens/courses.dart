@@ -29,7 +29,6 @@ class _CourseScreenState extends State<CourseScreen> {
   void fetchData() async {
     final dataProvider = Provider.of<DataProvider>(context, listen: false);
     await dataProvider.fetchCourses(category);
-    // Ensure to call setState after fetching data to trigger a rebuild
     setState(() {});
   }
 

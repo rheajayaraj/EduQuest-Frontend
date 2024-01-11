@@ -104,15 +104,27 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                     Navigator.of(context).pop();
                   },
                 ),
-                TextButton(
-                  child: Text(
-                    'Subscribe',
-                    style: TextStyle(color: text),
+                if (errorMessage == 'User not subscribed yet' ||
+                    errorMessage == 'User subscription has expired')
+                  TextButton(
+                    child: Text(
+                      'Subscribe',
+                      style: TextStyle(color: text),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/plans');
+                    },
+                  )
+                else
+                  TextButton(
+                    child: Text(
+                      'Courses',
+                      style: TextStyle(color: text),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/mycourses');
+                    },
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/plans');
-                  },
-                ),
               ],
             );
           },
