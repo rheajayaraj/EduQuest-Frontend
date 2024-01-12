@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:eduquest/screens/courses.dart';
 import 'package:flutter/material.dart';
 import 'package:eduquest/theme/colours.dart';
@@ -24,6 +25,11 @@ class _HomeState extends State<Home> {
 
   @override
   void dispose() {
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
     _searchController.dispose();
     super.dispose();
   }
@@ -62,23 +68,21 @@ class _HomeState extends State<Home> {
                       child: TextField(
                         controller: _searchController,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
+                          border: InputBorder.none,
                           hintText: 'Search all categories',
-                          prefixIcon: Icon(Icons.search),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: primary, width: 2.0),
-                            borderRadius: BorderRadius.circular(8.0),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: primary,
                           ),
                         ),
                         onChanged: (value) {
                           setState(() {});
                         },
                         style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                            color: text),
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          color: text,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -177,11 +181,11 @@ class _HomeState extends State<Home> {
                                 width: 120,
                                 height: 240,
                                 child: Card(
+                                  color: background,
                                   clipBehavior: Clip.antiAlias,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
-                                  elevation: 4.0,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
@@ -252,7 +256,7 @@ Widget _buildShimmerPlaceholder() {
           height: 240,
           child: Card(
             elevation: 0.0,
-            color: Colors.white, // Adjust placeholder card color
+            color: Colors.white,
           ),
         );
       },

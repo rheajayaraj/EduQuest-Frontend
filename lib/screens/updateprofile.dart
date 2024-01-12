@@ -311,6 +311,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     width: 300.0,
                     child: DropdownButtonFormField<String>(
                       value: _selectedGender,
+                      dropdownColor: background,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
@@ -326,7 +327,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           value: gender,
                           child: Text(
                             gender,
-                            style: TextStyle(color: text),
+                            style: TextStyle(
+                                color: text, fontWeight: FontWeight.normal),
                           ),
                         );
                       }).toList(),
@@ -350,6 +352,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     width: 300.0,
                     child: DropdownButtonFormField<String>(
                       value: _selectedState,
+                      dropdownColor: background,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
@@ -365,7 +368,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           value: state,
                           child: Text(
                             state,
-                            style: TextStyle(color: text),
+                            style: TextStyle(
+                                color: text, fontWeight: FontWeight.normal),
                           ),
                         );
                       }).toList(),
@@ -444,7 +448,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       child: Text(
                         'Update',
                         style: TextStyle(
-                          color: text,
+                          color: background,
                           fontSize: 18.0,
                           fontWeight: FontWeight.w600,
                         ),

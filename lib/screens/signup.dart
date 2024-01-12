@@ -173,19 +173,22 @@ class _SignUpState extends State<SignUp> {
                     controller: _usernameController,
                     validator: _validateUsername,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: background,
+                      hintText: 'Name',
+                      prefixIcon: Icon(Icons.person, color: accent),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 14.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      hintText: 'Name',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: primary, width: 2.0),
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none, // Hide the border
                       ),
                     ),
                     style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        color: text),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
+                      color: text,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -199,19 +202,22 @@ class _SignUpState extends State<SignUp> {
                     validator: _validatePhone,
                     maxLength: 10,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: background,
+                      hintText: 'Phone',
+                      prefixIcon: Icon(Icons.phone, color: accent),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 14.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      hintText: 'Phone',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: primary, width: 2.0),
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none, // Hide the border
                       ),
                     ),
                     style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        color: text),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
+                      color: text,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -223,19 +229,22 @@ class _SignUpState extends State<SignUp> {
                     controller: _emailController,
                     validator: _validateEmail,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: background,
+                      hintText: 'Email',
+                      prefixIcon: Icon(Icons.email, color: accent),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 14.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      hintText: 'Email',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: primary, width: 2.0),
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none, // Hide the border
                       ),
                     ),
                     style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        color: text),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
+                      color: text,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -248,13 +257,15 @@ class _SignUpState extends State<SignUp> {
                     obscureText: !_isPasswordVisible,
                     validator: _validatePassword,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: background,
+                      hintText: 'Password',
+                      prefixIcon: Icon(Icons.lock, color: accent),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 14.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      hintText: 'Password',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: primary, width: 2.0),
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none, // Hide the border
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -271,9 +282,10 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                     style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        color: text),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
+                      color: text,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -304,7 +316,7 @@ class _SignUpState extends State<SignUp> {
                     child: Text(
                       'Sign Up',
                       style: TextStyle(
-                        color: text,
+                        color: background,
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600,
                       ),
@@ -331,7 +343,7 @@ class _SignUpState extends State<SignUp> {
                     Text(
                       'Already have an account?\t',
                       style: TextStyle(
-                          color: accent,
+                          color: text,
                           fontSize: 14.0,
                           fontWeight: FontWeight.w400),
                     ),
@@ -343,13 +355,11 @@ class _SignUpState extends State<SignUp> {
                         );
                       },
                       child: Text(
-                        'LOGIN',
+                        'Login',
                         style: TextStyle(
                           color: text,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500,
-                          decoration: TextDecoration.underline,
-                          decorationColor: text,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     )

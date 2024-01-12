@@ -87,14 +87,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   Text(
                     'Forgot password?',
                     style: TextStyle(
-                        color: secondary,
+                        color: text,
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
                     'Enter the email linked to your account',
                     style: TextStyle(
-                        color: accent,
+                        color: text,
                         fontSize: 14.0,
                         fontWeight: FontWeight.w400),
                   ),
@@ -107,19 +107,22 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       controller: _emailController,
                       validator: _validateEmail,
                       decoration: InputDecoration(
+                        filled: true,
+                        fillColor: background,
+                        hintText: 'Email',
+                        prefixIcon: Icon(Icons.email, color: accent),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 14.0),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        hintText: 'Email',
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: primary, width: 2.0),
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide.none, // Hide the border
                         ),
                       ),
                       style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w400,
-                          color: text),
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                        color: text,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -147,7 +150,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       child: Text(
                         'Send Code',
                         style: TextStyle(
-                            color: secondary,
+                            color: background,
                             fontSize: 18.0,
                             fontWeight: FontWeight.w600),
                       ),

@@ -155,7 +155,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               return Card(
                                 color: background,
-                                elevation: 4.0,
                                 margin: EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 16.0),
                                 shape: RoundedRectangleBorder(
@@ -207,7 +206,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                             child: Text(
                                               'Subscribe',
                                               style: TextStyle(
-                                                color: text,
+                                                color: background,
                                                 fontSize: 18.0,
                                                 fontWeight: FontWeight.w600,
                                               ),

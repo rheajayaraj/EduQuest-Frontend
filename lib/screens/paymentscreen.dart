@@ -203,7 +203,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 label: Text(
                   'Pay Now',
-                  style: TextStyle(color: text),
+                  style: TextStyle(color: background),
                 ),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(primary),

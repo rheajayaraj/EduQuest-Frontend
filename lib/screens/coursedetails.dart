@@ -264,7 +264,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                           child: Text(
                             'Enroll',
                             style: TextStyle(
-                              color: text,
+                              color: background,
                               fontSize: 18.0,
                               fontWeight: FontWeight.w600,
                             ),

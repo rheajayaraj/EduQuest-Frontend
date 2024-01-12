@@ -136,19 +136,22 @@ class _LoginState extends State<Login> {
                     controller: _emailController,
                     validator: _validateEmail,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: background,
+                      hintText: 'Email',
+                      prefixIcon: Icon(Icons.email, color: accent),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 14.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      hintText: 'Email',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: primary, width: 2.0),
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none, // Hide the border
                       ),
                     ),
                     style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        color: text),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
+                      color: text,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -161,14 +164,10 @@ class _LoginState extends State<Login> {
                     obscureText: !_isPasswordVisible,
                     validator: _validatePassword,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
+                      filled: true,
+                      fillColor: background,
                       hintText: 'Password',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: primary, width: 2.0),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
+                      prefixIcon: Icon(Icons.lock, color: accent),
                       suffixIcon: IconButton(
                         icon: Icon(
                           _isPasswordVisible
@@ -182,11 +181,18 @@ class _LoginState extends State<Login> {
                           });
                         },
                       ),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 14.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                        borderSide: BorderSide.none, // Hide the border
+                      ),
                     ),
                     style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        color: text),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
+                      color: text,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -242,7 +248,7 @@ class _LoginState extends State<Login> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                          color: text,
+                          color: background,
                           fontSize: 18.0,
                           fontWeight: FontWeight.w600),
                     ),
@@ -268,7 +274,7 @@ class _LoginState extends State<Login> {
                     Text(
                       'Don\'t have an account?\t',
                       style: TextStyle(
-                          color: accent,
+                          color: text,
                           fontSize: 14.0,
                           fontWeight: FontWeight.w400),
                     ),
@@ -280,13 +286,11 @@ class _LoginState extends State<Login> {
                         );
                       },
                       child: Text(
-                        'SIGN UP',
+                        'Sign Up',
                         style: TextStyle(
                           color: text,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500,
-                          decoration: TextDecoration.underline,
-                          decorationColor: text,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     )

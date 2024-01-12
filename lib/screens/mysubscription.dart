@@ -126,7 +126,6 @@ class _MySubscriptionState extends State<MySubscription> {
                                 onTap: () => {},
                                 child: Card(
                                   color: background,
-                                  elevation: 4.0,
                                   margin: EdgeInsets.symmetric(
                                       vertical: 8.0, horizontal: 16.0),
                                   shape: RoundedRectangleBorder(

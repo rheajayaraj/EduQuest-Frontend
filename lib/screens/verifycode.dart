@@ -79,16 +79,14 @@ class _VerifyCodeState extends State<VerifyCode> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Password Reset Fail',
-                  style: TextStyle(color: secondary)),
+              title: Text('Password Reset Fail', style: TextStyle(color: text)),
               content: Text(responseData['error']),
               backgroundColor: background,
               actions: <Widget>[
                 TextButton(
                   child: Text(
                     'Try Again',
-                    style: TextStyle(
-                        color: secondary, fontWeight: FontWeight.w700),
+                    style: TextStyle(color: text, fontWeight: FontWeight.w700),
                   ),
                   onPressed: () async {
                     Navigator.pushReplacementNamed(
@@ -152,9 +150,7 @@ class _VerifyCodeState extends State<VerifyCode> {
                 Text(
                   'Enter the verification code sent to your email',
                   style: TextStyle(
-                      color: accent,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400),
+                      color: text, fontSize: 14.0, fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
                   height: 30.0,
@@ -174,13 +170,15 @@ class _VerifyCodeState extends State<VerifyCode> {
                     obscureText: !_isPasswordVisible,
                     validator: _validatePassword,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: background,
+                      hintText: 'Password',
+                      prefixIcon: Icon(Icons.lock, color: accent),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 14.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      hintText: 'Password',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: primary, width: 2.0),
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide.none, // Hide the border
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -197,9 +195,10 @@ class _VerifyCodeState extends State<VerifyCode> {
                       ),
                     ),
                     style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                        color: text),
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w400,
+                      color: text,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -225,7 +224,7 @@ class _VerifyCodeState extends State<VerifyCode> {
                     child: Text(
                       'Submit',
                       style: TextStyle(
-                        color: text,
+                        color: background,
                         fontSize: 18.0,
                         fontWeight: FontWeight.w600,
                       ),

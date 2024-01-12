@@ -57,11 +57,27 @@ class _CoursePlayerScreenState extends State<CoursePlayerScreen> {
   Widget build(BuildContext context) {
     String htmlContent = '''
       <!DOCTYPE html>
-      <html>
+      <html lang="en">
         <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Video Player</title>
+          <style>
+            body {
+              margin: 0;
+              padding: 0;
+            }
+            #videoPlayer {
+              width: 100%;
+              height: auto;
+              controls {
+                width: 100%; /* Set the width of controls to 100% */
+                height: auto; /* Ensure controls maintain aspect ratio */
+              }
+            }
+          </style>
         </head>
-        <body style="margin: 0; padding: 0;">
+        <body style="background-color:#edf6f9;">
           <video id="videoPlayer" width="100%" height="auto" controls disablePictureInPicture="true" controlsList="nodownload">
             Your browser does not support the video tag.
           </video>
@@ -73,8 +89,10 @@ class _CoursePlayerScreenState extends State<CoursePlayerScreen> {
       </html>
     ''';
     return Scaffold(
+      backgroundColor: background,
       appBar: AppBar(
         title: Text('${courseDetails.course_id.name}'),
+        backgroundColor: background,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -105,7 +123,7 @@ class _CoursePlayerScreenState extends State<CoursePlayerScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

@@ -105,7 +105,6 @@ class _CourseScreenState extends State<CourseScreen> {
                                   },
                                   child: Card(
                                     color: background,
-                                    elevation: 4.0,
                                     margin: EdgeInsets.symmetric(
                                         vertical: 8.0, horizontal: 16.0),
                                     shape: RoundedRectangleBorder(

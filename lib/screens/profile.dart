@@ -145,7 +145,7 @@ class _ProfileState extends State<Profile> {
                         )
                       : null,
                 ),
-                SizedBox(width: 40.0),
+                SizedBox(width: 20.0),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -334,7 +334,7 @@ class _ProfileState extends State<Profile> {
                 child: Text(
                   'Logout',
                   style: TextStyle(
-                    color: text,
+                    color: background,
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
                   ),
